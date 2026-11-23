@@ -12,6 +12,21 @@
   One board, many projects: games, music, a voice message board, a USB keyboard.
 </p>
 
+> [!CAUTION]
+> **Check the ESP32-S3 board before you power it on. Plugged in wrong, it can burn.**
+>
+> - **Direction:** the two USB-C ports on the ESP32-S3 board must face the **left edge** of
+>   TinkerPad, as printed on the back: *"ALIGN USB TO THE LEFT SIDE"*.
+> - **Alignment:** every pin must go into its own socket hole. Make sure the board is not
+>   shifted by one pin, and that no pin is left hanging outside the socket.
+> - Only plug in USB or the battery **after** you have checked both.
+>
+> **插上 ESP32-S3 开发板后，先仔细检查再通电，插错会烧板子。**
+>
+> - **方向：**开发板上的两个 USB-C 口必须朝向 TinkerPad 的**左边**（背面印有 "ALIGN USB TO THE LEFT SIDE"）。
+> - **对位：**每根针都要插进对应的孔，不能整体错开一位，也不能有针悬空在插座外面。
+> - 两点都确认后，**再**接 USB 或电池。
+
 <p align="center">
   <img src="docs/images/tinkerpad-hero.png" alt="TinkerPad" width="560">
 </p>
@@ -107,6 +122,10 @@ port you plugged into.
 
 The battery voltage reading, the IP5306 charger status and the display connector are on
 the board but do not have working examples yet.
+
+## License
+
+[MIT](LICENSE) © 2026 Lonely Binary
 
 ---
 
