@@ -23,7 +23,7 @@
 
 
 <p align="center">
-  <img src="docs/images/tinkerpad-hero.png" alt="TinkerPad" width="560">
+  <img src="docs/images/tinkerpad-insert-guide.png" alt="How to plug the ESP32-S3 board into TinkerPad: USB-C ports face left, line it up with the outline, every pin in its own hole" width="620">
 </p>
 
 ## What is on the board
@@ -74,10 +74,6 @@ Port B's IO48 is also the status LED.
 
 **Key numbering.** Keys, key LEDs and positions all use the same number: 0 is the
 top-left key, 3 the top-right, 15 the bottom-right. The LED under key *n* is LED *n*.
-
-<p align="center">
-  <img src="docs/images/tinkerpad-bottom.png" alt="TinkerPad, bottom, with the pin labels" width="420">
-</p>
 
 ## Examples
 
