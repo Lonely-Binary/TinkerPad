@@ -4,3 +4,5 @@ build/
 *.elf
 *.map
 .vscode/
+# firmware for the web installer is meant to be committed
+!docs/firmware/**/*.bin
