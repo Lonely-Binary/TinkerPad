@@ -14,7 +14,7 @@
 //   [ 0 ][ 1 ][ 2 ][ 3 ]     twelve people, one key each
 //   [ 4 ][ 5 ][ 6 ][ 7 ]
 //   [ 8 ][ 9 ][10 ][11 ]
-//   [MIC][重听][删除][全家]
+//   [MIC][REPLAY][DELETE][ ALL ]
 
 namespace Layout {
 

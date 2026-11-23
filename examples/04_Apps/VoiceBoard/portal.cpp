@@ -79,30 +79,30 @@ static void handleRoot() {
     int n = WiFi.scanNetworks();
 
     String h = kHead;
-    h += "<h1>VoiceBoard 设置</h1>";
+    h += "<h1>VoiceBoard settings</h1>";
 
-    h += "<div class='card'><div class='muted'>状态</div>";
-    h += "<div>本机：" + String(g_apName) + "</div>";
-    h += "<div>方式：" + String(g_mode == MODE_WIFI ? "WiFi" : "ESP-NOW") + "</div>";
+    h += "<div class='card'><div class='muted'>Status</div>";
+    h += "<div>This board: " + String(g_apName) + "</div>";
+    h += "<div>Sync over: " + String(g_mode == MODE_WIFI ? "WiFi" : "ESP-NOW") + "</div>";
     if (g_mode == MODE_WIFI) {
-        h += "<div>WiFi：" + (WiFi.status() == WL_CONNECTED
-                                 ? esc(g_ssid) + "，已连接（" + WiFi.localIP().toString() + "）"
-                                 : esc(g_ssid) + "，未连接") +
+        h += "<div>Wi-Fi: " + (WiFi.status() == WL_CONNECTED
+                                 ? esc(g_ssid) + ", connected (" + WiFi.localIP().toString() + ")"
+                                 : esc(g_ssid) + ", not connected") +
              "</div>";
     }
-    h += "<div>附近同步中的板子：" + String(Sync::peersOnline()) + " 块</div>";
-    h += "<div>留言：" + String(Store::count()) + " 条</div></div>";
+    h += "<div>Boards in sync range: " + String(Sync::peersOnline()) + "</div>";
+    h += "<div>Messages: " + String(Store::count()) + "</div></div>";
 
     h += "<form class='card' method='post' action='/save'>";
-    h += "<label>同步方式</label>";
+    h += "<label>How boards find each other</label>";
     h += "<div class='opt'><input type='radio' name='mode' value='0' id='m0'";
     h += g_mode == MODE_ESPNOW ? " checked" : "";
-    h += "><span>ESP-NOW（默认，不需要路由器）</span></div>";
+    h += "><span>ESP-NOW (default, no router needed)</span></div>";
     h += "<div class='opt'><input type='radio' name='mode' value='1' id='m1'";
     h += g_mode == MODE_WIFI ? " checked" : "";
-    h += "><span>WiFi（同一个 WiFi 里的板子互相同步）</span></div>";
+    h += "><span>Wi-Fi (boards on the same Wi-Fi network)</span></div>";
 
-    h += "<label>WiFi 名称</label><select name='ssid'>";
+    h += "<label>Wi-Fi network</label><select name='ssid'>";
     bool listedCurrent = false;
     for (int i = 0; i < n; i++) {
         String s = WiFi.SSID(i);
@@ -110,18 +110,19 @@ static void handleRoot() {
         bool sel = s == g_ssid;
         listedCurrent |= sel;
         h += "<option value=\"" + esc(s) + "\"" + (sel ? " selected" : "") + ">" + esc(s) +
-             "（" + String(WiFi.RSSI(i)) + " dBm）</option>";
+             " (" + String(WiFi.RSSI(i)) + " dBm)</option>";
     }
     if (!listedCurrent && g_ssid.length()) {
         h += "<option value=\"" + esc(g_ssid) + "\" selected>" + esc(g_ssid) + "</option>";
     }
     h += "</select>";
-    h += "<label>WiFi 密码</label><input type='password' name='pass' value=\"" + esc(g_pass) + "\">";
-    h += "<div class='muted'>只在选择 WiFi 方式时使用。</div>";
-    h += "<button type='submit'>保存并重启</button></form>";
+    h += "<label>Wi-Fi password</label><input type='password' name='pass' value=\"" + esc(g_pass) + "\">";
+    h += "<div class='muted'>Only used when Wi-Fi is selected.</div>";
+    h += "<button type='submit'>Save and restart</button></form>";
 
-    h += "<div class='muted'>这个设置热点会在开机 15 分钟后自动关闭。"
-         "WiFi 方式没连上时会一直开着，方便改密码。</div>";
+    h += "<div class='muted'>This settings hotspot closes 15 minutes after power-on. "
+         "In Wi-Fi mode it stays open until the board connects, so a wrong password "
+         "can always be fixed.</div>";
     h += "</body></html>";
 
     WiFi.scanDelete();
@@ -135,12 +136,13 @@ static void handleSave() {
     save(m, ssid, pass);
 
     String h = kHead;
-    h += "<h1>已保存</h1><div class='card'>板子正在重启。";
+    h += "<h1>Saved</h1><div class='card'>The board is restarting. ";
     if (m == MODE_WIFI) {
-        h += "它会连接到 WiFi「" + esc(ssid) + "」。连上后这个热点会在 15 分钟内关闭；"
-             "如果没连上，热点会继续开着，回到这里修改即可。";
+        h += "It will join the Wi-Fi network \"" + esc(ssid) + "\". Once connected, this hotspot "
+             "closes within 15 minutes. If it cannot connect, the hotspot stays open: come "
+             "back here to fix the settings.";
     } else {
-        h += "它会用 ESP-NOW 和附近的板子同步。";
+        h += "It will sync with nearby boards over ESP-NOW.";
     }
     h += "</div></body></html>";
     g_web.send(200, "text/html; charset=utf-8", h);

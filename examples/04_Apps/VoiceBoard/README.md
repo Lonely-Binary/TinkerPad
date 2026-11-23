@@ -1,103 +1,150 @@
 # TinkerPad — VoiceBoard
 
-家庭留言板。12 个人，每人一个键；留言存在 flash 里，断电不丢。
+A family voice message board. Twelve people, one key each. Messages are kept in
+flash, so they survive a power cut.
 
 ```
-[ 1 ][ 2 ][ 3 ][ 4 ]
-[ 5 ][ 6 ][ 7 ][ 8 ]      每个人一个键，各有自己的颜色
-[ 9 ][10 ][11 ][12 ]
-[MIC][重听][删除][全家]
+[ 1  ][ 2  ][ 3  ][ 4  ]
+[ 5  ][ 6  ][ 7  ][ 8  ]      one key per person, each in its own colour
+[ 9  ][ 10 ][ 11 ][ 12 ]
+[MIC][REPLAY][DELETE][ALL]
 ```
 
-全程都是**点按**，只有删除要按住。录音时不用按着任何键。
+Everything is a **tap**. Only DELETE is held. Nothing has to be held down while you talk.
 
-| 操作 | 效果 |
+| Do this | What happens |
 |---|---|
-| **点 MIC** | MIC 红灯呼吸，同时 12 个人的键和"全家"都亮起来，提示"现在点给谁" |
-| **再点收件人的键** | "嘀"一声，开始录音。此时**只有收件人的键**红色闪动，其余全灭 |
-| **说话，然后点任意键** | 结束并发送 |
-| **或者说完不管** | 安静 2.5 秒自动发送；8 秒内没说话则取消 |
-| **点 MIC 后点全家** | 给所有人留言（公告） |
-| **点某人的键** | 播放他最早的一条未听留言（含公告）；**没有未听的就重放他最近听过的那条**，键不亮也能重听 |
-| **点 全家** | 播放最新一条公告 |
-| **点 重听** | 再放一遍刚才那条 |
-| **按住 删除 1 秒** | 删除刚才播放的那条（按键逐渐变红，松手即取消） |
+| **Tap MIC** | MIC breathes red, and the twelve person keys and ALL light up: "who is it for?" |
+| **Tap the person's key** | A short beep, then recording starts. **Only that key** is lit, pulsing red with your voice |
+| **Talk, then tap any key** | The message is sent |
+| **Or just stop talking** | After 2.5 s of quiet it sends itself. If nothing is said within 8 s, it is cancelled |
+| **Tap MIC, then ALL** | A message for everyone (an announcement) |
+| **Tap a person's key** | Plays their oldest unheard message (announcements included). With nothing new, it **replays the last one they heard**, even though the key is dark |
+| **Tap ALL** | Plays the latest announcement |
+| **Tap REPLAY** | Plays the last message again |
+| **Hold DELETE for 1 s** | Deletes the message that was just played. The key fills and turns red; let go to cancel |
 
-发送成功：收件人的键白灯闪两下 + 上扬提示音。红灯闪两下 = 这里没有东西 / 没发出去。
-点了 MIC 却不选人，10 秒后自动取消；再点一次 MIC 也能取消。
+Sent: two white blinks on the recipient's key and a rising chime. Two red blinks mean
+"nothing here" or "not sent". Tap MIC and choose nobody, and it cancels after 10 s;
+tapping MIC again cancels too.
 
-**灯的含义**：平时**只有 MIC 微微亮着**，其余全灭。某人有未听留言时，他的键用自己的颜色**一直亮着**，并且每条留言脉冲一下（最多 5 下）。播放时对应的键呼吸。
+**The lights.** When idle, **only MIC glows**, dimly. A person with unheard messages has
+their key **lit** in their colour, with one pulse per message (up to five). A message
+playing makes its key breathe.
 
-## 多块板子同步
+## Several boards, kept in sync
 
-几块板子会自动保持一致：新留言、谁听过、删除，都会同步到每一块。**不需要配对，也不用按任何键**，能互相听到就自动加入。
+Boards keep each other identical: new messages, who has heard what, and deletes reach
+every board. **There is no pairing and nothing to press.** Boards that can hear each
+other join automatically.
 
-**两种同步方式**（在设置页里选）
+**Two ways to find each other** (chosen on the settings page)
 
-| 方式 | 怎么发现对方 | 适合 |
+| Mode | How boards find each other | Good for |
 |---|---|---|
-| **ESP-NOW**（默认） | 板子之间直接无线广播 | 同一栋房子，不需要路由器 |
-| **WiFi** | 同一个 WiFi 里 UDP 广播 | 板子都连着同一个路由器 |
+| **ESP-NOW** (default) | Radio broadcast, board to board | One house, no router needed |
+| **Wi-Fi** | UDP broadcast on the local network | Boards on the same Wi-Fi |
 
-两种方式**不能互通**：一块用 ESP-NOW、一块用 WiFi，它们互相看不到。
+The two modes **do not talk to each other**: a board on ESP-NOW cannot see one on Wi-Fi.
 
-**设置页**
-- 开机后有 15 分钟的设置热点 `VoiceBoard-XXXX`（没有密码）。手机连上会自动弹出设置页，或打开 `http://192.168.4.1`。
-- 选同步方式；选 WiFi 时从列表里选网络、输入密码，保存后板子重启。
-- WiFi 方式没连上时热点会一直开着，方便改密码。
+**Settings page**
 
-**板载状态灯（ESP32-S3 板子上 IO48 的那颗灯）**
+- For 15 minutes after power-on the board runs a hotspot called `VoiceBoard-XXXX`, with
+  no password. Join it from a phone and the settings page opens by itself, or browse to
+  `http://192.168.4.1`.
+- Pick the mode. For Wi-Fi, choose the network from the list, type the password, then
+  save. The board restarts.
+- In Wi-Fi mode the hotspot stays open until the board connects, so a wrong password
+  can always be fixed.
 
-| 颜色 | 意思 |
+**Status LED** (the single RGB LED on the ESP32-S3 board, IO48)
+
+| Colour | Meaning |
 |---|---|
-| 蓝色慢闪 | 设置热点开着 |
-| 黄色快闪 | WiFi 方式，还没连上 |
-| 绿色 | WiFi 已连接 |
-| 青色 | ESP-NOW 方式 |
+| Blue, slow blink | The settings hotspot is open |
+| Yellow, fast blink | Wi-Fi mode, not connected yet |
+| Green | Wi-Fi connected |
+| Cyan | ESP-NOW mode |
 
-偏暗 = 附近没有别的板子；变亮 = 正在和别的板子同步。
+Dim: no other board nearby. Bright: syncing with at least one other board.
 
-**同步怎么工作**
-- 每块板子每 2 秒广播一次"我在这里"和自己的状态指纹，不一致就自动补齐。
-- 一条 20 秒的留言约 150KB，ESP-NOW 实测约 3.3 秒；几秒钟的留言不到半秒。
-- 关机或走出范围的板子，下次回来会自动补上错过的内容。
+**How syncing works**
 
-**这是示例程序，故意做得很开放**：设置热点没有密码，任何运行这个固件的板子都能加入同步，数据不加密。真正使用前请自己加上配对和加密。
+- Every two seconds each board broadcasts "I am here" together with a fingerprint of its
+  messages. When two fingerprints differ, the boards catch each other up.
+- A 20-second message is about 150 KB and takes about 3.3 s over ESP-NOW. A message of a
+  few seconds takes well under a second.
+- A board that was switched off or out of range catches up when it comes back.
 
-## 要知道的限制
+**This is an example, deliberately open.** The settings hotspot has no password, any
+board running this firmware joins the sync, and nothing is encrypted. Add pairing and
+encryption before using it anywhere that matters.
 
-- 单条最长 **20 秒**，短于 0.4 秒视为误触，不发送。
-- 存储：IMA-ADPCM 4bit、14.7 kHz，约 7.4 KB/s，9.9 MB 分区约能放 **20 分钟**。满了先删最老的已听留言，再删最老的未听。
-- **没有隐私**：板子不知道是谁在按键，任何人都能按别人的键听。所以「删除」要按住，不能点一下。
-- 没有时钟，不记录留言时间。
-- 公告只要有一个人听过，就算「已听」，可以被优先清理。
+## Limits
 
-## 编译与上传
+- A message is at most **20 s** long. Anything under 0.4 s counts as an accidental tap
+  and is not sent.
+- Storage: 4-bit IMA ADPCM at 14.7 kHz, about 7.4 KB/s, so the 9.9 MB partition holds
+  roughly **20 minutes**. When it is full, the oldest heard messages go first, then the
+  oldest unheard ones.
+- **No privacy:** the board cannot tell who is pressing a key, so anyone can play anyone's
+  messages. That is also why DELETE has to be held.
+- There is no clock, so messages carry no time.
+- An announcement counts as heard once anyone has heard it, and can then be cleared to
+  make room.
+
+## Build and upload
+
+Arduino IDE settings (Tools menu):
+
+| Setting | Value |
+|---|---|
+| Board | ESP32S3 Dev Module |
+| Flash Size | 16MB (128Mb) |
+| PSRAM | OPI PSRAM |
+| Partition Scheme | 16M Flash (3MB APP/9.9MB FATFS) |
+| USB CDC On Boot | **Disabled** on the UART port, **Enabled** on the USB port |
+
+The partition scheme matters: without the FAT partition there is nowhere to keep
+messages. Library needed: **FastLED**.
+
+With `arduino-cli`:
 
 ```bash
-"/Applications/Arduino IDE.app/Contents/Resources/app/lib/backend/resources/arduino-cli" compile --fqbn "esp32:esp32:esp32s3:PSRAM=opi,CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB" VoiceBoard
+arduino-cli compile --fqbn "esp32:esp32:esp32s3:PSRAM=opi,CDCOnBoot=default,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB" VoiceBoard
 ```
 
-分区方案必须是 `app3M_fat9M_16MB`，否则没有放留言的 FAT 分区。
-端口是 `usbmodem*` 用 `CDCOnBoot=cdc`；`wchusbserial*` 用 `default`。
+Use `CDCOnBoot=cdc` instead when uploading through the native USB port.
 
-## 键位
+## Key numbering
 
-不需要校准：板子已经定型，键号、灯号、位置都是同一个数字，按阅读顺序横着数（左上 0，右下 15），键 n 下面就是灯 n。见 `layout.h`。
+There is nothing to calibrate. Key number, LED number and position are the same: row by
+row, left to right, 0 top-left to 15 bottom-right. The LED under key *n* is LED *n*. See
+`layout.h`.
 
-## 控制台
+## Serial console (115200 baud)
 
-`s` 状态　`l` 列出留言　`e` 编解码自测　`p` 同步状态　`w` 网络状态　`a` 立即关闭热点　`n` 生成一条测试留言　
-`W` 删除全部留言
-
-## 文件
-
-| | |
+| Key | Does |
 |---|---|
-| `VoiceBoard.ino` | 按键手势、录音/播放流程、控制台 |
-| `store.*` | FAT 上的留言存储、ADPCM 编解码、已听状态、删除墓碑、同步用的导入导出 |
-| `sync.*` | 自动发现、状态指纹、补齐会话；ESP-NOW 或 UDP 两种传输 |
-| `portal.*` | 设置热点和网页、WiFi 连接 |
-| `ledui.*` | 12 种人物颜色、未听闪烁计数、录音时间条 |
-| `layout.*` | 固定的键 / 灯 / 位置对应，以及键位 → 角色 |
-| `mic.*` `mixer.*` `pads.*` | 麦克风、混音输出、按键扫描 |
+| `s` | Status |
+| `l` | List messages |
+| `e` | Codec self-test |
+| `p` | Sync status |
+| `w` | Network status |
+| `a` | Close the settings hotspot now |
+| `n` | Make a test message for person 1 |
+| `h` | Person 1 hears their oldest message (for testing) |
+| `d` | Delete the newest message (for testing) |
+| `W` | Delete **all** messages |
+
+## Files
+
+| File | What it does |
+|---|---|
+| `VoiceBoard.ino` | Key gestures, recording and playback, the serial console |
+| `store.*` | Message storage on FAT, the ADPCM codec, heard flags, delete records, import and export for syncing |
+| `sync.*` | Finding other boards, state fingerprints, catch-up sessions; over ESP-NOW or UDP |
+| `portal.*` | The settings hotspot and web page, the Wi-Fi connection |
+| `ledui.*` | The twelve person colours, unread pulses, the status LED |
+| `layout.*` | Key, LED and position numbering, and which key does what |
+| `mic.*` `mixer.*` `pads.*` | Microphone capture, audio output, key scanning |

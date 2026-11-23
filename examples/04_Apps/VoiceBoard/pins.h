@@ -1,6 +1,6 @@
 #pragma once
 
-// TinkerPad hardware (prototype carrier: "蓝牙矩阵键盘 第四版").
+// TinkerPad hardware.
 //
 // U20 on that schematic is a 44-pin socket for a stock ESP32-S3-DevKitC-1,
 // not a soldered-down module. That is why the carrier's Type-C is 6-pin

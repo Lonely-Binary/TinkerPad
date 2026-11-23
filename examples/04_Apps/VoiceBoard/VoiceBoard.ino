@@ -6,15 +6,15 @@
 //   [ 1 ][ 2 ][ 3 ][ 4 ]
 //   [ 5 ][ 6 ][ 7 ][ 8 ]       one key per person, each in its own colour
 //   [ 9 ][10 ][11 ][12 ]
-//   [MIC][重听][删除][全家]
+//   [MIC][REPLAY][DELETE][ ALL ]
 //
 //   MIC, then a person's key  record a message for them. Talk; stop by tapping any
 //                             key, or just stop talking and it sends itself
-//   MIC, then 全家             record an announcement for everyone
+//   MIC, then ALL             record an announcement for everyone
 //   a person's key (tap)      play their oldest unheard message
-//   全家 (tap)                play the latest announcement
-//   重听 (tap)                play the last message again
-//   删除 (hold 1 s)           delete the last message that was played
+//   ALL (tap)                 play the latest announcement
+//   REPLAY (tap)              play the last message again
+//   DELETE (hold 1 s)         delete the last message that was played
 //
 // Everything is a tap except DELETE. Nothing has to be held while talking, which is
 // what made the first version hard for small children: it wanted two keys held down

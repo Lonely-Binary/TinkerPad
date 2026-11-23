@@ -20,12 +20,7 @@
 > - **Alignment:** every pin must go into its own socket hole. Make sure the board is not
 >   shifted by one pin, and that no pin is left hanging outside the socket.
 > - Only plug in USB or the battery **after** you have checked both.
->
-> **插上 ESP32-S3 开发板后，先仔细检查再通电，插错会烧板子。**
->
-> - **方向：**开发板上的两个 USB-C 口必须朝向 TinkerPad 的**左边**（背面印有 "ALIGN USB TO THE LEFT SIDE"）。
-> - **对位：**每根针都要插进对应的孔，不能整体错开一位，也不能有针悬空在插座外面。
-> - 两点都确认后，**再**接 USB 或电池。
+
 
 <p align="center">
   <img src="docs/images/tinkerpad-hero.png" alt="TinkerPad" width="560">

@@ -11,7 +11,7 @@
 //   unread                  steady glow in the person's colour, with one bright pulse
 //                           per waiting message (up to 5), then a pause
 //   playing                 that key breathes in its colour
-//   MIC tapped ("for who?") MIC breathes red and every person's key (and 全家) lights
+//   MIC tapped ("for who?") MIC breathes red and every person's key (and ALL) lights
 //                           in its own colour: "now tap who it is for"
 //   recording               ONLY the recipient's key is lit, pulsing red with the
 //                           voice; MIC steady red. Everything else is dark

@@ -40,8 +40,7 @@ uint8_t peakVoices();
 void resetStats();
 
 // Render time as a fraction of real time: 0.25 means a quarter of one core is
-// going on mixing. This is the number that answers DESIGN.md's open question
-// about whether 8 voices is the right target.
+// going on mixing.
 float load();
 
 // I2S write timeouts. Anything but zero means the audio task lost a race and

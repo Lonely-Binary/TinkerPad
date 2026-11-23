@@ -32,9 +32,9 @@ uint32_t stopCapture();
 bool capturing();
 uint32_t capturedFrames();
 
-// Samples at or beyond 0.1% of full scale during the last capture. DESIGN.md
-// named close-mic plosive clipping as the top hardware risk on the grounds that
-// software cannot repair it — this is the number that says whether it bit.
+// Samples at or beyond 0.1% of full scale during the last capture. Talking too close
+// to the microphone clips it, and software cannot repair a clipped recording — this
+// is the number that says whether it happened.
 uint32_t clipped();
 
 // Peak of the last capture, in dBFS, before normalisation. Very low means the
