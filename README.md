@@ -26,6 +26,22 @@
   <img src="docs/images/tinkerpad-insert-guide.png" alt="How to plug the ESP32-S3 board into TinkerPad: USB-C ports face left, line it up with the outline, every pin in its own hole" width="620">
 </p>
 
+## Examples
+
+**No Arduino IDE?** Install ready-made programs from Chrome or Edge with the
+[TinkerPad Web Installer](https://lonely-binary.github.io/TinkerPad/): plug in the board,
+click Install, pick the port.
+
+To build them yourself, open any folder in the Arduino IDE and upload it. Each one is
+independent.
+
+| Folder | What is inside |
+|---|---|
+| [`examples/01_HardwareTest`](examples/01_HardwareTest) | One small sketch per part: keys, LEDs, speaker, microphone, PSRAM, I²C. **Start here**: run them first to check that every part of your board works |
+| [`examples/04_Apps/VoiceBoard`](examples/04_Apps/VoiceBoard) | A family message board. Twelve people, one key each. Leave a voice message; it lights up their key. Several boards keep each other in sync over ESP-NOW or Wi-Fi. **Also in the [Web Installer](https://lonely-binary.github.io/TinkerPad/)** |
+
+More examples (games, music) are on the way.
+
 ## What is on the board
 
 - **ESP32-S3 N16R8**: 16 MB flash, 8 MB PSRAM, Wi-Fi and Bluetooth LE
@@ -74,17 +90,6 @@ Port B's IO48 is also the status LED.
 
 **Key numbering.** Keys, key LEDs and positions all use the same number: 0 is the
 top-left key, 3 the top-right, 15 the bottom-right. The LED under key *n* is LED *n*.
-
-## Examples
-
-Open any folder in the Arduino IDE and upload it. Each one is independent.
-
-| Folder | What is inside |
-|---|---|
-| [`examples/01_HardwareTest`](examples/01_HardwareTest) | One small sketch per part: keys, LEDs, speaker, microphone, PSRAM, I²C. **Start here**: run them first to check that every part of your board works |
-| [`examples/04_Apps/VoiceBoard`](examples/04_Apps/VoiceBoard) | A family message board. Twelve people, one key each. Leave a voice message; it lights up their key. Several boards keep each other in sync over ESP-NOW or Wi-Fi |
-
-More examples (games, music) are on the way.
 
 ## Getting started
 

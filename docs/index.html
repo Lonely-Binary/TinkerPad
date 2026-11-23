@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinkerPad Web Installer</title>
+  <meta name="description" content="Install TinkerPad firmware straight from Chrome or Edge. No Arduino IDE needed.">
+  <link rel="icon" href="images/lockup-light.svg">
+  <script type="module" src="https://unpkg.com/esp-web-tools@10.4.0/dist/web/install-button.js?module"></script>
+  <style>
+    :root {
+      --teal: #14898F;
+      --teal-ink: #117A80;
+      --red: #D12428;
+      --ink: #1d2b2c;
+      --muted: #5d6b6c;
+      --bg: #f4f6f6;
+      --card: #ffffff;
+      --line: #dfe5e5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 28px 16px 56px; }
+    header { text-align: center; margin-bottom: 24px; }
+    header img { height: 40px; }
+    h1 { font-size: 30px; margin: 14px 0 4px; }
+    .lead { color: var(--muted); margin: 0; }
+    h2 { font-size: 21px; margin: 0 0 8px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .warn { border: 2px solid var(--red); }
+    .warn h2 { color: var(--red); }
+    .warn ul { margin: 8px 0 0; padding-left: 20px; }
+    .guide { display: block; width: 100%; max-width: 520px; margin: 14px auto 0; border-radius: 10px; }
+    ol { margin: 8px 0 0; padding-left: 22px; }
+    li { margin: 4px 0; }
+    .app { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .app p { margin: 4px 0 0; color: var(--muted); }
+    .app .meta { font-size: 14px; color: var(--muted); }
+    .install {
+      font: inherit; font-weight: 600;
+      background: var(--teal-ink); color: #fff;
+      border: 0; border-radius: 10px;
+      padding: 12px 26px; cursor: pointer;
+    }
+    .install:hover { background: var(--teal); }
+    .nope { color: var(--red); font-weight: 600; margin: 0; }
+    code { background: #eef2f2; padding: 1px 6px; border-radius: 5px; font-size: 90%; }
+    a { color: var(--teal-ink); }
+    footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 32px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="images/lockup-light.svg" alt="Lonely Binary">
+    <h1>TinkerPad Web Installer</h1>
+    <p class="lead">Put a ready-made program on your TinkerPad straight from the browser. No Arduino IDE needed.</p>
+  </header>
+
+  <section class="card warn">
+    <h2>Before you plug in: check the ESP32-S3 board</h2>
+    Plugged in wrong, the board can burn.
+    <ul>
+      <li><b>Direction:</b> the two USB-C ports on the ESP32-S3 board face the <b>left edge</b> of TinkerPad.</li>
+      <li><b>Alignment:</b> every pin in its own hole. Not shifted by one pin, no pin outside the socket.</li>
+      <li>Only connect USB or the battery after you have checked both.</li>
+    </ul>
+    <img class="guide" src="images/tinkerpad-insert-guide.png" alt="The ESP32-S3 board above TinkerPad: USB-C ports face left, line it up with the outline">
+  </section>
+
+  <section class="card">
+    <h2>How to install</h2>
+    <ol>
+      <li>Use <b>Chrome</b> or <b>Edge</b> on a computer (Windows, macOS, Linux or ChromeOS).</li>
+      <li>Plug a USB cable into either USB-C port on the ESP32-S3 board.</li>
+      <li>Click <b>Install</b> below and pick the board in the window that opens.
+        It shows up as <code>USB JTAG/serial debug unit</code> or <code>USB Single Serial</code>.</li>
+      <li>Wait for the progress bar to finish. The board restarts on its own.</li>
+    </ol>
+    <p class="lead" style="margin-top:12px">Nothing in the list? Hold <b>BOOT</b>, tap <b>RESET</b>, let go of BOOT, then try again.
+      On Windows the UART port may need the CH340 driver.</p>
+  </section>
+
+  <section class="card app">
+    <div>
+      <h2>VoiceBoard</h2>
+      <p>A family voice message board. Twelve people, one key each. Several boards keep each other in sync.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/VoiceBoard">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/voiceboard/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+
+  <p class="lead">Installing asks whether to <b>erase</b> the board first. Erasing also deletes the messages
+    stored on it; skip it to keep them.</p>
+
+  <footer>
+    <a href="https://github.com/Lonely-Binary/TinkerPad">Source code on GitHub</a> · MIT License<br>
+    From Zeros to Heroes, One Bit at a Time.
+  </footer>
+</main>
+</body>
+</html>
