@@ -552,10 +552,56 @@ def hardware_test():
     return page("Hardware tests: check every part of the board", P, "".join(css), "".join(body))
 
 
+# ----------------------------------------------------------------------- Beatbox
+
+def beatbox():
+    import math
+    P = 4.8
+    css, body = [], []
+    # a beatboxer, mouth opening on every sound
+    body.append('<circle cx="86" cy="118" r="44" fill="#f2c9a0"/>'
+                '<path d="M42 104 a44 44 0 0 1 88 -6 q-30 -18 -88 6 z" fill="#3b2a1d"/>'
+                '<circle cx="100" cy="108" r="5" fill="#222"/>'
+                '<path d="M30 250 a56 60 0 0 1 112 0 z" fill="#ff6b4a"/>')
+    css.append(kf("mouth", 0.6, [(0, "scaleY(0.25)"), (0.08, "scaleY(1)"), (0.25, "scaleY(0.25)"), (0.6, "scaleY(0.25)")],
+                  prop="transform", origin="112px 134px"))
+    body.append('<ellipse class="mouth" cx="112" cy="134" rx="10" ry="9" fill="#7a2a2a"/>')
+    words = ["boots", "cats", "boots", "cats"]
+    for i, w in enumerate(words):
+        t = i * 0.6
+        css.append(blink(f"wd{i}", P, [(t, t + 0.45), (t + 2.4, t + 2.85)]))
+        body.append(f'<g class="wd{i}"><text x="{150 + (i % 2) * 18}" y="{70 + (i % 2) * 18}" '
+                    f'style="font:900 {26 - (i % 2) * 4}px {FONT};fill:{["#ff4f3a", TEAL][i % 2]}">{w}!</text></g>')
+    body.append(f'<path d="M140 130 q16 -10 0 -22 M150 140 q26 -18 0 -40" stroke="{TEAL}" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>')
+    # the loop: a ring with a playhead going round, hits appearing layer by layer
+    cx, cy, r = 318, 138, 78
+    body.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#d6dfe0" stroke-width="14"/>')
+    for k in range(8):
+        a = math.radians(-90 + k * 45)
+        body.append(f'<line x1="{cx + (r - 12) * math.cos(a):.1f}" y1="{cy + (r - 12) * math.sin(a):.1f}" '
+                    f'x2="{cx + (r + 12) * math.cos(a):.1f}" y2="{cy + (r + 12) * math.sin(a):.1f}" stroke="#bfcacc" stroke-width="2"/>')
+    body.append(f'<g><animateTransform attributeName="transform" type="rotate" '
+                f'from="0 {cx} {cy}" to="360 {cx} {cy}" dur="1.6s" repeatCount="indefinite"/>'
+                f'<line x1="{cx}" y1="{cy}" x2="{cx}" y2="{cy - r - 16}" stroke="{TEAL}" stroke-width="4" stroke-linecap="round"/>'
+                f'<circle cx="{cx}" cy="{cy - r}" r="9" fill="{TEAL}"/></g>')
+    layers = [("#ff4f3a", [0, 4], 0.2, "kick"), ("#ffb000", [2, 6], 1.8, "snare"), ("#2f80ff", [1, 3, 5, 7], 3.4, "hats")]
+    for li, (col, steps_, t, name) in enumerate(layers):
+        for st in steps_:
+            a = math.radians(-90 + st * 45)
+            css.append(blink(f"L{li}s{st}", P, [(t, P - 0.05)]))
+            body.append(f'<circle class="L{li}s{st}" cx="{cx + r * math.cos(a):.1f}" cy="{cy + r * math.sin(a):.1f}" r="11" fill="{col}"/>')
+        css.append(blink(f"lb{li}", P, [(t, P - 0.05)]))
+        body.append(f'<g class="lb{li}"><circle cx="426" cy="{96 + li * 32}" r="8" fill="{col}"/>'
+                    f'{T(440, 102 + li * 32, f"layer {li + 1}: {name}")}</g>')
+    body.append(f'<text x="{cx}" y="{cy + 8}" text-anchor="middle" style="font:900 20px {FONT};fill:{TEAL_INK}">LOOP</text>')
+    body.append(T(280, 266, "Beatbox into it · it loops · stack it up layer by layer", "t3", "middle"))
+    return page("Beatbox: a loop station for your voice", P, "".join(css), "".join(body))
+
+
 SCENES = {"memorylights": memory_lights, "whackamole": whack_a_mole, "pingpong": ping_pong,
           "soundmatch": sound_match, "beatgrid": beat_grid, "midipad": midi_pad,
           "ukuleleteacher": ukulele_teacher, "voiceboard": voice_board, "macropad": macro_pad,
-          "combopad": combo_pad, "hardwaretest": hardware_test}
+          "combopad": combo_pad, "hardwaretest": hardware_test, "beatbox": beatbox}
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
