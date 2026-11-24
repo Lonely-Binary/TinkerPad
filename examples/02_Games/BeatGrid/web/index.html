@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07070f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>BeatGrid</title>
+<style>
+:root{
+  --bg:#07070f; --ink:#f1f2ff; --dim:#8b8fb0; --line:rgba(255,255,255,.14);
+  --card:rgba(16,16,34,.86); --accent:#22d3ee; --hot:#ff3d9a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+  font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+  touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.panel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;
+  padding-top:max(16px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom));
+  overflow:auto;pointer-events:none}
+.panel.hidden{display:none}
+.card{pointer-events:auto;width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);
+  border-radius:20px;padding:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 20px 60px rgba(0,0,0,.5)}
+h1{margin:0;font-size:34px;letter-spacing:.14em;font-weight:800;
+  background:linear-gradient(90deg,#ff3d9a,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--dim);margin:2px 0 14px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--dim);
+  padding:4px 10px;border:1px solid var(--line);border-radius:99px;margin-bottom:14px}
+.chip i{width:8px;height:8px;border-radius:50%;background:#ef4444}
+.chip.on i{background:#22c55e}.chip.demo i{background:#f59e0b}
+.songs{display:grid;gap:8px;margin-bottom:12px}
+.song{display:flex;align-items:center;justify-content:space-between;text-align:left;width:100%;
+  padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--ink);font:inherit;cursor:pointer}
+.song b{display:block;font-size:17px}
+.song small{color:var(--dim)}
+.song.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent);
+  box-shadow:0 0 0 1px var(--c) inset}
+.song .best{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim);font-size:13px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.seg button{padding:10px 0;border-radius:12px;border:1px solid var(--line);background:transparent;
+  color:var(--dim);font:inherit;font-weight:600;cursor:pointer}
+.seg button.sel{color:#06060c;background:var(--accent);border-color:var(--accent)}
+.go{width:100%;padding:15px;border:0;border-radius:14px;font:inherit;font-size:18px;font-weight:800;
+  letter-spacing:.12em;color:#fff;cursor:pointer;background:linear-gradient(90deg,#ff3d9a,#7c3aed 55%,#22d3ee)}
+.go:disabled{opacity:.4}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:14px;
+  color:var(--dim);font-size:13px}
+.row button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:transparent;
+  color:var(--ink);font-size:18px;cursor:pointer}
+.link{background:none;border:0;color:var(--accent);font:inherit;font-size:13px;cursor:pointer;padding:0}
+.hint{margin:12px 0 0;color:var(--dim);font-size:12.5px}
+#stop{position:fixed;top:max(10px,env(safe-area-inset-top));right:10px;width:40px;height:40px;border-radius:12px;
+  border:1px solid var(--line);background:rgba(10,10,24,.6);color:var(--ink);font-size:18px;cursor:pointer;display:none}
+#stop.show{display:block}
+.rank{font-size:96px;line-height:1;font-weight:900;margin:0;text-align:center}
+.big{font-size:40px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0;text-align:center;font-size:12px;color:var(--dim)}
+.stats b{display:block;font-size:20px;color:var(--ink)}
+.nb{text-align:center;color:#fbbf24;font-weight:700;letter-spacing:.1em;min-height:1.4em}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.two .go{font-size:15px}.two .alt{background:transparent;border:1px solid var(--line)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<button id="stop" aria-label="Stop">&#x2715;</button>
+
+<div id="menu" class="panel"><div class="card">
+  <h1>BEATGRID</h1>
+  <p class="sub">Press the pad when the ring closes in.</p>
+  <div id="chip" class="chip"><i></i><span id="chipText">Looking for the board…</span></div>
+  <div id="songs" class="songs"></div>
+  <div class="seg" id="diffs">
+    <button data-d="0">Easy</button><button data-d="1">Normal</button><button data-d="2">Hard</button>
+  </div>
+  <button id="go" class="go" disabled>START</button>
+  <div class="row"><span>Picture timing</span>
+    <span><button id="calDown">&minus;</button> <span id="calVal" style="display:inline-block;min-width:60px;text-align:center">0 ms</span> <button id="calUp">+</button></span></div>
+  <p class="hint" id="hint">On a computer you can also play the pads with the keys 1 2 3 4 / Q W E R / A S D F / Z X C V.
+    The sound always comes from the board.</p>
+  <p class="hint"><button class="link" id="demo">Try it without the board (demo)</button></p>
+</div></div>
+
+<div id="result" class="panel hidden"><div class="card">
+  <p class="rank" id="rRank">S</p>
+  <div class="big" id="rScore">0</div>
+  <div class="nb" id="rNb"></div>
+  <div class="stats">
+    <div><b id="rP">0</b>Perfect</div><div><b id="rG">0</b>Good</div>
+    <div><b id="rO">0</b>OK</div><div><b id="rM">0</b>Miss</div>
+  </div>
+  <div class="row" style="margin:0 0 14px"><span>Best combo <b id="rC" style="color:var(--ink)">0</b></span><span>Best score <b id="rB" style="color:var(--ink)">0</b></span></div>
+  <div class="two"><button class="go" id="again">AGAIN</button><button class="go alt" id="toMenu">MENU</button></div>
+</div></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const cv = $('#c'), g = cv.getContext('2d');
+const COL_HUE = [296, 197, 99, 35];          // pad column colours (same as the LEDs)
+const JUDGE = [{t:'PERFECT', c:'#ffe27a'}, {t:'GOOD', c:'#4ade80'}, {t:'OK', c:'#60a5fa'}, {t:'MISS', c:'#f43f5e'}];
+const APPROACH = 1600;                       // ms a ring takes to close in
+
+// ------------------------------------------------------------------ state
+const S = {
+  mode: 'idle',                              // idle | play | end
+  songs: [], song: 0, diff: 1, best: [],
+  notes: [], done: [], start: 0, end: 0, bpm: 120, hue: 200, name: '', max: 1,
+  score: 0, shown: 0, combo: 0, mult: 1, judge: [0,0,0,0], fever: false, feverAt: -9999,
+  clockOff: 0, samples: [], cal: +(localStorage.getItem('bg_cal') || 0),
+  link: null, demo: false, tileFlash: new Array(16).fill(0), tileMiss: new Array(16).fill(0),
+  press: new Array(16).fill(0),
+};
+const parts = [], rings = [], pops = [];
+let shake = 0, W = 0, H = 0, DPR = 1, GX = 0, GY = 0, TS = 0, nextIdx = 0;
+const stars = Array.from({length: 70}, () => ({x: Math.random(), y: Math.random(), z: .2 + Math.random() * .8}));
+
+// ------------------------------------------------------------------ clock
+function now() { return performance.now(); }
+function boardNow() { return now() + S.clockOff; }
+function songMs() { return boardNow() - S.start + S.cal; }
+
+function onPong(m) {
+  const t = now(), rtt = t - m.c;
+  S.samples.push({rtt, off: m.b + rtt / 2 - t});
+  if (S.samples.length > 12) S.samples.shift();
+  let best = S.samples[0];
+  for (const s of S.samples) if (s.rtt < best.rtt) best = s;
+  S.clockOff = best.off;
+}
+
+// ------------------------------------------------------------------ links
+class BoardLink {
+  constructor() { this.connect(); }
+  connect() {
+    const ws = this.ws = new WebSocket('ws://' + location.hostname + ':81');
+    ws.onopen = () => { setChip('on', 'Board connected'); this.ping(); S.samples = []; for (let i = 0; i < 6; i++) setTimeout(() => this.ping(), i * 150); };
+    ws.onmessage = e => { try { handle(JSON.parse(e.data)); } catch (_) {} };
+    ws.onclose = () => { setChip('', 'Looking for the board…'); $('#go').disabled = true; if (!S.demo) setTimeout(() => { if (!S.demo) this.connect(); }, 1500); };
+    ws.onerror = () => ws.close();
+    clearInterval(this.pt); this.pt = setInterval(() => this.ping(), 2500);
+  }
+  ping() { this.send({c: 'ping', t: Math.round(now())}); }
+  send(o) { if (this.ws.readyState === 1) this.ws.send(JSON.stringify(o)); }
+  close() { clearInterval(this.pt); this.ws.onclose = null; this.ws.close(); }
+}
+
+// A pretend board, so the page can be tried (and looked at) without hardware.
+class DemoLink {
+  constructor() {
+    this.timer = null;
+    setTimeout(() => handle({e: 'hi', songs: [{n: 'Neon Rush', bpm: 124, h: 200}, {n: 'Pixel Sunrise', bpm: 104, h: 140}, {n: 'Night Drive', bpm: 140, h: 280}],
+      song: 0, diff: 1, best: [0, 12000, 0, 0, 0, 0, 0, 0, 0], st: 0}), 50);
+  }
+  send(o) {
+    if (o.c === 'start') this.play(o.song, o.diff);
+    else if (o.c === 'stop') { clearInterval(this.timer); handle({e: 'idle', song: S.song, diff: S.diff}); }
+    else if (o.c === 'sel') { S.song = o.song; S.diff = o.diff; }
+  }
+  play(si, di) {
+    const bpm = [124, 104, 140][si], step = 60000 / bpm / 4, notes = [];
+    let col = 1;
+    for (let k = 0, t = 16 * step; t < 40000; k++, t += step * (di === 0 ? 4 : di === 1 ? 2 : 1 + (k % 3 === 0 ? 1 : 0))) {
+      const row = 3 - Math.min(3, Math.floor(Math.abs(Math.sin(k * .37)) * 4));
+      col = (col + 1 + Math.floor(Math.random() * 3)) % 4;
+      notes.push([Math.round(t), row * 4 + col]);
+    }
+    const max = notes.reduce((a, _, i) => a + 300 * (1 + Math.min(Math.floor(i / 10), 3)), 0);
+    const start = boardNow() + 500, end = notes[notes.length - 1][0] + 2500;
+    handle({e: 'song', i: si, d: di, n: ['Neon Rush', 'Pixel Sunrise', 'Night Drive'][si], bpm, h: [200, 140, 280][si], start, end, max, notes});
+    let i = 0, score = 0, combo = 0, mc = 0; const cnt = [0, 0, 0, 0];
+    const plan = notes.map(n => { const r = Math.random(); return r < .1 ? null : (Math.random() - .5) * 150; });
+    clearInterval(this.timer);
+    this.timer = setInterval(() => {
+      const t = boardNow() - start;
+      while (i < notes.length && notes[i][0] + (plan[i] === null ? 160 : plan[i]) <= t) {
+        const dev = plan[i];
+        if (dev === null) { combo = 0; cnt[3]++; handle({e: 'miss', i}); }
+        else {
+          const a = Math.abs(dev), j = a < 50 ? 0 : a < 100 ? 1 : 2;
+          score += [300, 200, 100][j] * (1 + Math.min(Math.floor(combo / 10), 3)); combo++; mc = Math.max(mc, combo); cnt[j]++;
+          handle({e: 'hit', i, j, s: score, c: combo, x: 1 + Math.min(Math.floor(combo / 10), 3)});
+        }
+        i++;
+      }
+      if (t > end) {
+        clearInterval(this.timer);
+        const f = score / max;
+        handle({e: 'end', s: score, b: Math.max(score, 12000), nb: 0, j: cnt, mc, r: f >= .9 ? 'S' : f >= .75 ? 'A' : f >= .55 ? 'B' : 'C', max});
+      }
+    }, 10);
+  }
+}
+
+// ------------------------------------------------------------------ messages from the board
+function handle(m) {
+  switch (m.e) {
+    case 'hi':
+      S.songs = m.songs; S.song = m.song; S.diff = m.diff; S.best = m.best;
+      buildMenu(); $('#go').disabled = false;
+      if (m.st === 0 && S.mode !== 'idle') toMenu();
+      break;
+    case 'pong': onPong(m); break;
+    case 'idle': S.song = m.song; S.diff = m.diff; toMenu(); break;
+    case 'song': beginSong(m); break;
+    case 'hit': hit(m); break;
+    case 'miss': miss(m); break;
+    case 'end': finish(m); break;
+  }
+}
+
+function beginSong(m) {
+  S.mode = 'play'; S.song = m.i; S.diff = m.d; S.name = m.n; S.bpm = m.bpm; S.hue = m.h;
+  S.start = m.start; S.end = m.end; S.max = m.max || 1;
+  S.notes = m.notes; S.done = new Array(m.notes.length).fill(false);
+  const t = songMs() - S.cal;                          // joined late? settle what has already gone by
+  S.notes.forEach((n, i) => { if (n[0] < t - 250) S.done[i] = true; });
+  nextIdx = 0;
+  S.score = S.shown = 0; S.combo = 0; S.mult = 1; S.judge = [0,0,0,0]; S.fever = false;
+  parts.length = rings.length = pops.length = 0;
+  $('#menu').classList.add('hidden'); $('#result').classList.add('hidden');
+  $('#stop').classList.add('show');
+}
+
+function tileC(p) { return [GX + (p % 4 + .5) * TS, GY + ((p >> 2) + .5) * TS]; }
+
+function hit(m) {
+  const n = S.notes[m.i]; if (!n) return;
+  S.done[m.i] = true; S.judge[m.j]++; S.score = m.s; S.combo = m.c; S.mult = m.x;
+  const [cx, cy] = tileC(n[1]), hue = COL_HUE[n[1] % 4], big = m.j === 0;
+  S.tileFlash[n[1]] = 1;
+  rings.push({x: cx, y: cy, r: TS * .4, v: TS * (big ? 2.4 : 1.7), life: 1, hue});
+  const count = (big ? 26 : 16) + (S.fever ? 14 : 0);
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * 6.283, v = (.4 + Math.random()) * TS * (big ? 3.2 : 2.2);
+    parts.push({x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - TS * .6, life: 1, d: .9 + Math.random() * .9,
+      hue: hue + (Math.random() - .5) * 40, s: 2 + Math.random() * (TS / 14)});
+  }
+  pops.push({x: cx, y: cy - TS * .1, t: JUDGE[m.j].t, c: JUDGE[m.j].c, life: 1});
+  const was = S.fever; S.fever = m.c >= 20;
+  if (S.fever && !was) { S.feverAt = now(); shake = 8; }
+}
+
+function miss(m) {
+  const n = S.notes[m.i]; if (!n) return;
+  S.done[m.i] = true; S.judge[3]++; S.combo = 0; S.mult = 1; S.fever = false;
+  S.tileMiss[n[1]] = 1; shake = 10;
+  const [cx, cy] = tileC(n[1]);
+  pops.push({x: cx, y: cy, t: 'MISS', c: JUDGE[3].c, life: 1});
+}
+
+function finish(m) {
+  S.mode = 'end'; S.score = m.s; S.fever = false;
+  $('#stop').classList.remove('show');
+  setTimeout(() => {
+    if (S.mode !== 'end') return;
+    $('#rRank').textContent = m.r;
+    $('#rRank').style.color = {S: '#ffe27a', A: '#c084fc', B: '#60a5fa', C: '#4ade80'}[m.r];
+    $('#rScore').textContent = m.s.toLocaleString();
+    $('#rNb').textContent = m.nb ? 'NEW BEST' : '';
+    [$('#rP'), $('#rG'), $('#rO'), $('#rM')].forEach((e, i) => e.textContent = m.j[i]);
+    $('#rC').textContent = m.mc; $('#rB').textContent = m.b.toLocaleString();
+    S.best[S.song * 3 + S.diff] = m.b;
+    $('#result').classList.remove('hidden');
+  }, 900);
+}
+
+function toMenu() {
+  S.mode = 'idle'; buildMenu();
+  $('#result').classList.add('hidden'); $('#menu').classList.remove('hidden'); $('#stop').classList.remove('show');
+}
+
+// ------------------------------------------------------------------ menu
+function setChip(cls, text) { $('#chip').className = 'chip ' + cls; $('#chipText').textContent = text; }
+
+function buildMenu() {
+  const box = $('#songs'); box.innerHTML = '';
+  S.songs.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'song' + (i === S.song ? ' sel' : '');
+    b.style.setProperty('--c', `hsl(${s.h} 85% 62%)`);
+    const best = S.best[i * 3 + S.diff] || 0;
+    b.innerHTML = `<span><b>${s.n}</b><small>${s.bpm} BPM</small></span><span class="best">${best ? 'Best<br>' + best.toLocaleString() : ''}</span>`;
+    b.onclick = () => { S.song = i; sendSel(); buildMenu(); };
+    box.appendChild(b);
+  });
+  document.querySelectorAll('#diffs button').forEach(b => {
+    b.classList.toggle('sel', +b.dataset.d === S.diff);
+    b.onclick = () => { S.diff = +b.dataset.d; sendSel(); buildMenu(); };
+  });
+}
+function sendSel() { S.link && S.link.send({c: 'sel', song: S.song, diff: S.diff}); }
+function startGame() { S.link && S.link.send({c: 'start', song: S.song, diff: S.diff}); }
+
+$('#go').onclick = startGame;
+$('#again').onclick = startGame;
+$('#toMenu').onclick = toMenu;
+$('#stop').onclick = () => { S.link && S.link.send({c: 'stop'}); toMenu(); };
+function setCal(v) { S.cal = Math.max(-200, Math.min(200, v)); localStorage.setItem('bg_cal', S.cal); $('#calVal').textContent = (S.cal > 0 ? '+' : '') + S.cal + ' ms'; }
+$('#calDown').onclick = () => setCal(S.cal - 10);
+$('#calUp').onclick = () => setCal(S.cal + 10);
+setCal(S.cal);
+
+function useDemo() {
+  if (S.link && S.link.close) S.link.close();
+  S.demo = true; S.link = new DemoLink(); setChip('demo', 'Demo mode: no board, no sound');
+}
+$('#demo').onclick = useDemo;
+
+// ------------------------------------------------------------------ input
+const KEYS = '1234qwerasdfzxcv';
+addEventListener('keydown', e => {
+  if (e.repeat || e.ctrlKey || e.metaKey) return;
+  const p = KEYS.indexOf(e.key.toLowerCase());
+  if (p >= 0 && S.mode === 'play') tap(p);
+  else if (e.key === 'Enter' && S.mode === 'idle' && !$('#go').disabled) startGame();
+});
+cv.addEventListener('pointerdown', e => {
+  if (S.mode !== 'play') return;
+  const c = Math.floor((e.clientX - GX) / TS), r = Math.floor((e.clientY - GY) / TS);
+  if (c >= 0 && c < 4 && r >= 0 && r < 4) tap(r * 4 + c);
+});
+function tap(p) { S.press[p] = 1; S.link && S.link.send({c: 'tap', p}); }
+
+// ------------------------------------------------------------------ drawing
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  const top = 84, bottom = 26;
+  TS = Math.min((W - 24) / 4, (H - top - bottom) / 4);
+  GX = (W - TS * 4) / 2; GY = top + (H - top - bottom - TS * 4) / 2;
+}
+addEventListener('resize', resize); resize();
+
+function rr(x, y, w, h, r) {
+  g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+}
+
+let last = now();
+function frame() {
+  const t0 = now(), dt = Math.min((t0 - last) / 1000, .05); last = t0;
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const playing = S.mode === 'play' || S.mode === 'end';
+  const ms = playing ? songMs() : t0;
+  const beatMs = 60000 / (playing ? S.bpm : 120);
+  const bph = playing ? ((ms % beatMs) + beatMs) % beatMs / beatMs : (t0 % 500) / 500;
+  const pulse = Math.exp(-bph * 4.5);
+  const hue = playing ? S.hue : 210;
+
+  // shake
+  shake *= Math.pow(.001, dt);
+  g.save(); if (shake > .3) g.translate((Math.random() - .5) * shake, (Math.random() - .5) * shake);
+
+  drawBackground(hue, pulse, dt, t0);
+  drawGrid(ms, pulse, dt, t0);
+  drawEffects(dt);
+  g.restore();
+  if (playing) drawHud(ms, t0);
+  requestAnimationFrame(frame);
+}
+
+function drawBackground(hue, pulse, dt, t0) {
+  const fever = S.fever;
+  const grd = g.createLinearGradient(0, 0, 0, H);
+  grd.addColorStop(0, `hsl(${hue} 55% ${5 + pulse * 3 + (fever ? 4 : 0)}%)`);
+  grd.addColorStop(1, `hsl(${(hue + 60) % 360} 60% ${8 + pulse * 5 + (fever ? 6 : 0)}%)`);
+  g.fillStyle = grd; g.fillRect(-20, -20, W + 40, H + 40);
+  // stars
+  g.fillStyle = '#fff';
+  for (const s of stars) {
+    s.y += dt * .02 * s.z * (fever ? 4 : 1); if (s.y > 1) { s.y = 0; s.x = Math.random(); }
+    g.globalAlpha = .15 + .45 * s.z * (.6 + pulse * .6);
+    g.fillRect(s.x * W, s.y * H, 1 + s.z * 1.6, 1 + s.z * 1.6);
+  }
+  // floor lines
+  g.globalAlpha = .12 + pulse * .1 + (fever ? .12 : 0);
+  g.strokeStyle = `hsl(${(hue + 150) % 360} 90% 65%)`; g.lineWidth = 1;
+  const hy = H * .62;
+  g.beginPath();
+  for (let i = -8; i <= 8; i++) { g.moveTo(W / 2 + i * W * .05, hy); g.lineTo(W / 2 + i * W * .35, H); }
+  const sp = (t0 / (fever ? 700 : 1800)) % 1;
+  for (let k = 0; k < 8; k++) { const f = Math.pow((k + sp) / 8, 2.2), y = hy + (H - hy) * f; g.moveTo(0, y); g.lineTo(W, y); }
+  g.stroke(); g.globalAlpha = 1;
+  if (fever) {                                     // fever glow at the edges
+    const e = g.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .35, W / 2, H / 2, Math.max(W, H) * .75);
+    e.addColorStop(0, 'rgba(255,60,150,0)'); e.addColorStop(1, `hsla(${(t0 / 6) % 360},100%,60%,${.22 + pulse * .18})`);
+    g.fillStyle = e; g.fillRect(0, 0, W, H);
+  }
+}
+
+function drawGrid(ms, pulse, dt, t0) {
+  const playing = S.mode === 'play';
+  const gap = TS * .07;
+  // nearest ring per pad, so the tile can light up as it closes in
+  const near = new Array(16).fill(null);
+  if (playing) {
+    for (let i = nextIdx = firstUndone(); i < S.notes.length; i++) {
+      const d = S.notes[i][0] - ms;
+      if (d > APPROACH) break;
+      if (S.done[i]) continue;
+      const p = S.notes[i][1];
+      if (!near[p] || d < near[p].d) near[p] = {d, i};
+    }
+  }
+  for (let p = 0; p < 16; p++) {
+    const c = p % 4, x = GX + c * TS + gap, y = GY + (p >> 2) * TS + gap, w = TS - gap * 2, hue = COL_HUE[c];
+    const fl = S.tileFlash[p], ms_ = S.tileMiss[p], pr = S.press[p];
+    S.tileFlash[p] = Math.max(0, fl - dt * 3.2); S.tileMiss[p] = Math.max(0, ms_ - dt * 3); S.press[p] = Math.max(0, pr - dt * 6);
+    const n = near[p];
+    const glow = n ? Math.max(0, 1 - Math.max(n.d, 0) / 700) : 0;
+    rr(x, y, w, w, TS * .16);
+    g.fillStyle = `hsla(${hue} 80% 60% / ${.05 + glow * .3 + fl * .6 + pr * .15 + pulse * .02})`; g.fill();
+    if (ms_ > 0) { g.fillStyle = `rgba(244,63,94,${ms_ * .5})`; g.fill(); }
+    g.lineWidth = 2 + glow * 2 + fl * 2;
+    g.strokeStyle = S.fever ? `hsl(${(t0 / 5 + p * 22) % 360} 100% 65%)` : `hsla(${hue} 85% ${55 + glow * 20}% / ${.28 + glow * .7 + fl * .5})`;
+    g.stroke();
+  }
+  // approach rings
+  if (playing) {
+    g.lineCap = 'round';
+    for (let p = 0; p < 16; p++) {
+      for (let i = nextIdx; i < S.notes.length; i++) {
+        const n = S.notes[i], d = n[0] - ms;
+        if (d > APPROACH) break;
+        if (S.done[i] || n[1] !== p) continue;
+        const k = Math.max(0, Math.min(1, d / APPROACH));           // 1 far .. 0 now
+        const [cx, cy] = tileC(p), hue = COL_HUE[p % 4];
+        const r = TS * (.34 + 1.05 * k * k), a = Math.min(1, (1 - k) * 3 + .15);
+        g.strokeStyle = `hsla(${hue} 100% 68% / ${a})`; g.lineWidth = 2 + (1 - k) * (TS / 14);
+        g.shadowColor = `hsl(${hue} 100% 60%)`; g.shadowBlur = 10 * (1 - k);
+        g.beginPath(); g.arc(cx, cy, r, 0, 6.283); g.stroke();
+        g.shadowBlur = 0;
+        if (d < 120) {                                               // about to land
+          g.fillStyle = `hsla(${hue} 100% 75% / ${.35 * (1 - Math.max(d, 0) / 120)})`;
+          g.beginPath(); g.arc(cx, cy, TS * .3, 0, 6.283); g.fill();
+        }
+      }
+    }
+  }
+}
+
+function firstUndone() { let i = nextIdx; while (i < S.notes.length && S.done[i]) i++; return i; }
+
+function drawEffects(dt) {
+  g.globalCompositeOperation = 'lighter';
+  for (let i = rings.length - 1; i >= 0; i--) {
+    const r = rings[i]; r.life -= dt * 2.4; r.r += r.v * dt;
+    if (r.life <= 0) { rings.splice(i, 1); continue; }
+    g.strokeStyle = `hsla(${r.hue} 100% 70% / ${r.life * .8})`; g.lineWidth = 3 + r.life * 5;
+    g.beginPath(); g.arc(r.x, r.y, r.r, 0, 6.283); g.stroke();
+  }
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i]; p.life -= dt / p.d;
+    if (p.life <= 0) { parts.splice(i, 1); continue; }
+    p.vy += TS * 5 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= Math.pow(.2, dt);
+    g.fillStyle = `hsla(${p.hue} 100% 65% / ${p.life})`; g.fillRect(p.x, p.y, p.s, p.s);
+  }
+  g.globalCompositeOperation = 'source-over';
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  for (let i = pops.length - 1; i >= 0; i--) {
+    const p = pops[i]; p.life -= dt * 1.6;
+    if (p.life <= 0) { pops.splice(i, 1); continue; }
+    const k = 1 - p.life;
+    g.globalAlpha = Math.min(1, p.life * 2);
+    g.font = `800 ${Math.round(TS * (.2 + .06 * Math.min(1, k * 8)))}px -apple-system,Segoe UI,Roboto,sans-serif`;
+    g.fillStyle = p.c; g.strokeStyle = 'rgba(0,0,0,.55)'; g.lineWidth = 4;
+    g.strokeText(p.t, p.x, p.y - k * TS * .5); g.fillText(p.t, p.x, p.y - k * TS * .5);
+  }
+  g.globalAlpha = 1;
+}
+
+function drawHud(ms, t0) {
+  S.shown += (S.score - S.shown) * Math.min(1, 12 * .016);
+  const pad = 16, top = Math.max(0, 0);
+  g.textBaseline = 'alphabetic';
+  g.textAlign = 'left'; g.fillStyle = '#f1f2ff';
+  g.font = '800 30px -apple-system,Segoe UI,Roboto,sans-serif';
+  g.fillText(Math.round(S.shown).toLocaleString(), pad, 40);
+  g.font = '600 12px -apple-system,Segoe UI,Roboto,sans-serif'; g.fillStyle = '#8b8fb0';
+  g.fillText(S.name.toUpperCase() + '  ·  ' + ['EASY', 'NORMAL', 'HARD'][S.diff], pad, 60);
+  // progress
+  const pw = W - pad * 2, pr = Math.max(0, Math.min(1, ms / S.end));
+  g.fillStyle = 'rgba(255,255,255,.12)'; g.fillRect(pad, 70, pw, 3);
+  g.fillStyle = `hsl(${S.hue} 90% 62%)`; g.fillRect(pad, 70, pw * pr, 3);
+
+  // combo, centre-right
+  g.textAlign = 'right';
+  if (S.combo > 1) {
+    const pop = Math.max(0, 1 - (t0 - (S._cAt || 0)) / 150);
+    g.fillStyle = S.fever ? `hsl(${(t0 / 5) % 360} 100% 70%)` : '#fff';
+    g.font = `900 ${Math.round(34 + pop * 6)}px -apple-system,Segoe UI,Roboto,sans-serif`;
+    g.fillText(S.combo, W - 64, 40);
+    g.font = '700 12px -apple-system,Segoe UI,Roboto,sans-serif'; g.fillStyle = '#8b8fb0';
+    g.fillText('COMBO' + (S.mult > 1 ? '  x' + S.mult : ''), W - 64, 60);
+  }
+  if (S._lastCombo !== S.combo) { S._cAt = t0; S._lastCombo = S.combo; }
+
+  // count-in and fever banner
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  const beatMs = 60000 / S.bpm;
+  if (ms < beatMs * 4) {
+    const n = 4 - Math.max(0, Math.floor(ms / beatMs));
+    const ph = ms < 0 ? 0 : (ms % beatMs) / beatMs;
+    g.fillStyle = `rgba(255,255,255,${ms < 0 ? .9 : 1 - ph})`;
+    g.font = `900 ${Math.round(TS * (1.4 - ph * .3))}px -apple-system,Segoe UI,Roboto,sans-serif`;
+    g.fillText(ms < 0 ? 'READY' : String(n), W / 2, GY + TS * 2);
+  }
+  if (S.fever && t0 - S.feverAt < 1400) {
+    g.globalAlpha = 1 - (t0 - S.feverAt) / 1400;
+    g.fillStyle = `hsl(${(t0 / 4) % 360} 100% 70%)`;
+    g.font = `900 ${Math.round(TS * .8)}px -apple-system,Segoe UI,Roboto,sans-serif`;
+    g.fillText('FEVER!', W / 2, GY + TS * 2);
+    g.globalAlpha = 1;
+  }
+}
+
+// ------------------------------------------------------------------ start
+if (location.protocol === 'file:' || /[?&]demo/.test(location.search)) useDemo();
+else S.link = new BoardLink();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

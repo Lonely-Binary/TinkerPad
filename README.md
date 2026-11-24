@@ -33,14 +33,27 @@
 click Install, pick the port.
 
 To build them yourself, open any folder in the Arduino IDE and upload it. Each one is
-independent.
+independent. Everything except the hardware tests is also in the Web Installer.
 
 | Folder | What is inside |
 |---|---|
-| [`examples/01_HardwareTest`](examples/01_HardwareTest) | One small sketch per part: keys, LEDs, speaker, microphone, PSRAM, I²C. **Start here**: run them first to check that every part of your board works |
-| [`examples/04_Apps/VoiceBoard`](examples/04_Apps/VoiceBoard) | A family message board. Twelve people, one key each. Leave a voice message; it lights up their key. Several boards keep each other in sync over ESP-NOW or Wi-Fi. **Also in the [Web Installer](https://lonely-binary.github.io/TinkerPad/)** |
+| [`01_HardwareTest`](examples/01_HardwareTest) | One small sketch per part: keys, LEDs, speaker, microphone, PSRAM, I²C. **Start here**: run them first to check that every part of your board works |
+| **Games** | |
+| [`MemoryLights`](examples/02_Games/MemoryLights) | Watch the lights, then play them back. The classic memory game |
+| [`WhackAMole`](examples/02_Games/WhackAMole) | Hit the moles before they hide again |
+| [`PingPong`](examples/02_Games/PingPong) | Table tennis for two players, one column of keys each |
+| [`SoundMatch`](examples/02_Games/SoundMatch) | A memory game for your ears: 16 keys hide 8 pairs of sounds |
+| [`BeatGrid`](examples/02_Games/BeatGrid) | A rhythm game on the keys, with the score shown on your phone or computer |
+| **Music** | |
+| [`MidiPad`](examples/03_Music/MidiPad) | USB MIDI drum pads for GarageBand and other music apps, plus a follow-the-lights game |
+| [`UkuleleTeacher`](examples/03_Music/UkuleleTeacher) | Learn a song on the ukulele, one phrase at a time |
+| **Apps** | |
+| [`VoiceBoard`](examples/04_Apps/VoiceBoard) | A family voice message board. Twelve people, one key each. Several boards keep each other in sync over ESP-NOW or Wi-Fi |
+| [`MacroPad`](examples/04_Apps/MacroPad) | A 16-key Bluetooth shortcut keyboard, set up from a web page |
+| [`ComboPad`](examples/04_Apps/ComboPad) | A fighting-game combo keyboard: every key plays a whole combo over USB |
 
-More examples (games, music) are on the way.
+Most games, MidiPad, UkuleleTeacher and ComboPad need **USB Mode: USB-OTG (TinyUSB)** in
+the Arduino IDE. Each sketch lists its settings at the top of the `.ino` file.
 
 ## What is on the board
 

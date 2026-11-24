@@ -44,6 +44,7 @@
     .guide { display: block; width: 100%; max-width: 520px; margin: 14px auto 0; border-radius: 10px; }
     ol { margin: 8px 0 0; padding-left: 22px; }
     li { margin: 4px 0; }
+    h2.group { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal-ink); margin: 32px 4px 0; }
     .app { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
     .app p { margin: 4px 0 0; color: var(--muted); }
     .app .meta { font-size: 14px; color: var(--muted); }
@@ -92,6 +93,95 @@
       On Windows the UART port may need the CH340 driver.</p>
   </section>
 
+  <h2 class="group">Games</h2>
+  <section class="card app">
+    <div>
+      <h2>MemoryLights</h2>
+      <p>Watch the lights, then play them back. The classic memory game.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/MemoryLights">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/memorylights/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>WhackAMole</h2>
+      <p>Hit the moles before they hide again.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/WhackAMole">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/whackamole/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>PingPong</h2>
+      <p>Table tennis for two players, one column of keys each.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/PingPong">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/pingpong/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>SoundMatch</h2>
+      <p>A memory game for your ears: 16 keys hide 8 pairs of sounds.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/SoundMatch">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/soundmatch/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>BeatGrid</h2>
+      <p>A rhythm game on the keys, with the score shown on your phone or computer.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/BeatGrid">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/beatgrid/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+
+  <h2 class="group">Music</h2>
+  <section class="card app">
+    <div>
+      <h2>MidiPad</h2>
+      <p>USB MIDI drum pads for GarageBand and other music apps, plus a follow-the-lights game.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/03_Music/MidiPad">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/midipad/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>UkuleleTeacher</h2>
+      <p>Learn a song on the ukulele, one phrase at a time.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/03_Music/UkuleleTeacher">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/ukuleleteacher/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+
+  <h2 class="group">Apps</h2>
   <section class="card app">
     <div>
       <h2>VoiceBoard</h2>
@@ -104,9 +194,36 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
+  <section class="card app">
+    <div>
+      <h2>MacroPad</h2>
+      <p>A 16-key Bluetooth shortcut keyboard, set up from a web page.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/MacroPad">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/macropad/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
+  <section class="card app">
+    <div>
+      <h2>ComboPad</h2>
+      <p>A fighting-game combo keyboard: every key plays a whole combo over USB.</p>
+      <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/ComboPad">How to use it</a></div>
+    </div>
+    <esp-web-install-button manifest="firmware/combopad/manifest.json">
+      <button slot="activate" class="install">Install</button>
+      <p slot="unsupported" class="nope">This browser cannot install. Use Chrome or Edge on a computer.</p>
+      <p slot="not-allowed" class="nope">Open this page over https to install.</p>
+    </esp-web-install-button>
+  </section>
 
-  <p class="lead">Installing asks whether to <b>erase</b> the board first. Erasing also deletes the messages
-    stored on it; skip it to keep them.</p>
+  <p class="lead">Installing asks whether to <b>erase</b> the board first. Erasing also deletes anything the
+    program saved on the board, such as VoiceBoard messages or MacroPad keys; skip it to keep them.</p>
+  <p class="lead">MemoryLights, WhackAMole, PingPong, SoundMatch, MidiPad, UkuleleTeacher and ComboPad take over the
+    USB port marked <b>USB</b>. To install something else on them later, use the <b>UART</b> port, or hold
+    <b>BOOT</b>, tap <b>RESET</b> and let go of BOOT first.</p>
 
   <footer>
     <a href="https://github.com/Lonely-Binary/TinkerPad">Source code on GitHub</a> · MIT License<br>

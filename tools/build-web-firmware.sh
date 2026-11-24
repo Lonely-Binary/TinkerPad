@@ -3,6 +3,12 @@
 #
 #   tools/build-web-firmware.sh examples/04_Apps/VoiceBoard voiceboard "TinkerPad VoiceBoard" 1.0.0
 #
+# A fifth argument overrides the board settings (FQBN), for sketches that need
+# USB-OTG (TinyUSB) mode:
+#
+#   tools/build-web-firmware.sh examples/03_Music/MidiPad midipad "TinkerPad MidiPad" 1.0.0 \
+#     "esp32:esp32:esp32s3:PSRAM=opi,USBMode=default,CDCOnBoot=cdc,UploadMode=cdc,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB"
+#
 # Needs arduino-cli with the esp32 core and FastLED installed.
 set -euo pipefail
 
@@ -11,7 +17,7 @@ NAME=${2:?short name, e.g. voiceboard}
 TITLE=${3:?title shown in the installer}
 VERSION=${4:?version, e.g. 1.0.0}
 
-FQBN="esp32:esp32:esp32s3:PSRAM=opi,CDCOnBoot=default,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB"
+FQBN=${5:-"esp32:esp32:esp32s3:PSRAM=opi,CDCOnBoot=default,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB"}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 OUT="$ROOT/docs/firmware/$NAME"
 BUILD=$(mktemp -d)
