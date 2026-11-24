@@ -7,6 +7,8 @@
 
 <h1 align="center">TinkerPad</h1>
 
+<p align="center"><b>ESP32-S3 Blueprints No.02</b> · a Lonely Binary series (<a href="#about-esp32-s3-blueprints">about</a>)</p>
+
 <p align="center">
   An ESP32-S3 board with 16 lit keys, a microphone and a speaker.<br>
   One board, many projects: games, music, a voice message board, a USB keyboard.
@@ -131,6 +133,17 @@ port you plugged into.
 
 The battery voltage reading, the IP5306 charger status and the display connector are on
 the board but do not have working examples yet.
+
+## About ESP32-S3 Blueprints
+
+**ESP32-S3 Blueprints** is a Lonely Binary series: finished things you'd actually want on your
+desk, each shipped with the complete blueprint behind it. Every entry is built on the
+ESP32-S3, so what you learn on one carries over to the next, and comes with the full source.
+
+| No. | Blueprint | Status |
+|---|---|---|
+| 01 | **[Word Clock](https://github.com/Lonely-Binary/WordClock)**: an 11×10 word panel with six faces | ✅ Available |
+| **02** | **TinkerPad**: 16 lit keys, a microphone and a speaker | ✅ This repo |
 
 ## License
 
