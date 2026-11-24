@@ -1,5 +1,9 @@
 # TinkerPad — VoiceBoard
 
+<p align="center"><img src="../../../docs/images/anim/voiceboard.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#voiceboard"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 A family voice message board. Twelve people, one key each. Messages are kept in
 flash, so they survive a power cut.
 

@@ -1,5 +1,9 @@
 # WhackAMole
 
+<p align="center"><img src="../../../docs/images/anim/whackamole.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#whackamole"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 Hit the moles before they hide again!
 
 ## How to play

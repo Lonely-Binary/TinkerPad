@@ -1,5 +1,9 @@
 # MidiPad
 
+<p align="center"><img src="../../../docs/images/anim/midipad.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#midipad"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 Two things in one: **USB MIDI drum pads** when it is plugged into a computer, and a
 **follow-the-lights music game** when it runs on its own.
 

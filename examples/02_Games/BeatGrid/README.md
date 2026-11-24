@@ -1,5 +1,9 @@
 # BeatGrid
 
+<p align="center"><img src="../../../docs/images/anim/beatgrid.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#beatgrid"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 A rhythm game on the 4x4 pads. **The board is the game and the speaker; the phone, tablet or computer is the picture.**
 
 ```

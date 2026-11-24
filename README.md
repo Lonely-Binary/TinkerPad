@@ -34,28 +34,41 @@
 [TinkerPad Web Installer](https://lonely-binary.github.io/TinkerPad/): plug in the board,
 click Install, pick the port.
 
-To build them yourself, open any folder in the Arduino IDE and upload it. Each one is
-independent. Everything except the hardware tests is also in the Web Installer.
+To build them yourself, open any folder in the Arduino IDE and upload it. Each one is independent.
 
-| Folder | What is inside |
-|---|---|
-| [`01_HardwareTest`](examples/01_HardwareTest) | One small sketch per part: keys, LEDs, speaker, microphone, PSRAM, I²C. **Start here**: run them first to check that every part of your board works |
-| **Games** | |
-| [`MemoryLights`](examples/02_Games/MemoryLights) | Watch the lights, then play them back. The classic memory game |
-| [`WhackAMole`](examples/02_Games/WhackAMole) | Hit the moles before they hide again |
-| [`PingPong`](examples/02_Games/PingPong) | Table tennis for two players, one column of keys each |
-| [`SoundMatch`](examples/02_Games/SoundMatch) | A memory game for your ears: 16 keys hide 8 pairs of sounds |
-| [`BeatGrid`](examples/02_Games/BeatGrid) | A rhythm game on the keys, with the score shown on your phone or computer |
-| **Music** | |
-| [`MidiPad`](examples/03_Music/MidiPad) | USB MIDI drum pads for GarageBand and other music apps, plus a follow-the-lights game |
-| [`UkuleleTeacher`](examples/03_Music/UkuleleTeacher) | Learn a song on the ukulele, one phrase at a time |
-| **Apps** | |
-| [`VoiceBoard`](examples/04_Apps/VoiceBoard) | A family voice message board. Twelve people, one key each. Several boards keep each other in sync over ESP-NOW or Wi-Fi |
-| [`MacroPad`](examples/04_Apps/MacroPad) | A 16-key Bluetooth shortcut keyboard, set up from a web page |
-| [`ComboPad`](examples/04_Apps/ComboPad) | A fighting-game combo keyboard: every key plays a whole combo over USB |
+### Start here
 
-Most games, MidiPad, UkuleleTeacher and ComboPad need **USB Mode: USB-OTG (TinyUSB)** in
-the Arduino IDE. Each sketch lists its settings at the top of the `.ino` file.
+<table>
+<tr><td width="400"><a href="examples/01_HardwareTest"><img src="docs/images/anim/hardwaretest.svg" width="400" alt="Hardware tests"></a></td><td><h3>Hardware tests</h3>Eight small sketches, one per part: the keys, the 16 LEDs, the speaker, the microphone, recording and playing back, the PSRAM and the I²C bus. Run them first when you get a board, so you know every part works before you build anything bigger.<br><br><a href="examples/01_HardwareTest">Code &amp; guide</a></td></tr>
+</table>
+
+### Games
+
+<table>
+<tr><td width="400"><a href="examples/02_Games/MemoryLights"><img src="docs/images/anim/memorylights.svg" width="400" alt="MemoryLights"></a></td><td><h3>MemoryLights</h3>The classic memory game. The pads light up one after another, each with its own colour and xylophone note, and you play them back in the same order. Every round adds a step and goes a little faster. Three levels: 4, 8 or all 16 pads.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#memorylights"><b>▶ Install firmware</b></a> · <a href="examples/02_Games/MemoryLights">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/02_Games/WhackAMole"><img src="docs/images/anim/whackamole.svg" width="400" alt="WhackAMole"></a></td><td><h3>WhackAMole</h3>Moles pop up all over the board; hit them before they hide. Golden moles are worth three points, red flashing bombs cost five. A round lasts 30 seconds and the moles speed up every 10.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#whackamole"><b>▶ Install firmware</b></a> · <a href="examples/02_Games/WhackAMole">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/02_Games/PingPong"><img src="docs/images/anim/pingpong.svg" width="400" alt="PingPong"></a></td><td><h3>PingPong</h3>Table tennis for two, with the board between you. Each player's bat is the column of keys on their edge. Hit the ball back when it reaches you; it speeds up and can switch rows. First to 5 wins.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#pingpong"><b>▶ Install firmware</b></a> · <a href="examples/02_Games/PingPong">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/02_Games/SoundMatch"><img src="docs/images/anim/soundmatch.svg" width="400" alt="SoundMatch"></a></td><td><h3>SoundMatch</h3>A memory game you play with your ears. Sixteen keys hide eight pairs of real sounds: animals, a doorbell, coins. Turn two over at a time and find all the pairs in as few tries as you can.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#soundmatch"><b>▶ Install firmware</b></a> · <a href="examples/02_Games/SoundMatch">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/02_Games/BeatGrid"><img src="docs/images/anim/beatgrid.svg" width="400" alt="BeatGrid"></a></td><td><h3>BeatGrid</h3>A rhythm game. The board makes its own Wi-Fi, and your phone or computer shows rings closing in on the pads; press each one as its ring lands. The board plays the music and keeps the score.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#beatgrid"><b>▶ Install firmware</b></a> · <a href="examples/02_Games/BeatGrid">Code &amp; guide</a></td></tr>
+</table>
+
+### Music
+
+<table>
+<tr><td width="400"><a href="examples/03_Music/MidiPad"><img src="docs/images/anim/midipad.svg" width="400" alt="MidiPad"></a></td><td><h3>MidiPad</h3>Plugged into a computer it is a USB MIDI drum pad for GarageBand, Logic or Ableton. On its own it is a music game: pick one of 12 songs and follow the lights to play the melody while the drums play along.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#midipad"><b>▶ Install firmware</b></a> · <a href="examples/03_Music/MidiPad">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/03_Music/UkuleleTeacher"><img src="docs/images/anim/ukuleleteacher.svg" width="400" alt="UkuleleTeacher"></a></td><td><h3>UkuleleTeacher</h3>The keys become a ukulele fretboard, one row per string. The teacher plays a phrase, then the lights show you where to press, one note at a time, until you can play the whole song. What you learn is where your fingers go on a real ukulele.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#ukuleleteacher"><b>▶ Install firmware</b></a> · <a href="examples/03_Music/UkuleleTeacher">Code &amp; guide</a></td></tr>
+</table>
+
+### Apps
+
+<table>
+<tr><td width="400"><a href="examples/04_Apps/VoiceBoard"><img src="docs/images/anim/voiceboard.svg" width="400" alt="VoiceBoard"></a></td><td><h3>VoiceBoard</h3>A voice message board for a family of up to twelve, one key each. Tap MIC, tap a person and talk; their key glows until they listen. Several boards around the house keep each other in sync, over ESP-NOW or your Wi-Fi.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#voiceboard"><b>▶ Install firmware</b></a> · <a href="examples/04_Apps/VoiceBoard">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/04_Apps/MacroPad"><img src="docs/images/anim/macropad.svg" width="400" alt="MacroPad"></a></td><td><h3>MacroPad</h3>A Bluetooth shortcut keyboard. Give each key any shortcut from a web page on your phone or computer, pair it with your Mac or PC, and copy, paste or screenshot with one press.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#macropad"><b>▶ Install firmware</b></a> · <a href="examples/04_Apps/MacroPad">Code &amp; guide</a></td></tr>
+<tr><td width="400"><a href="examples/04_Apps/ComboPad"><img src="docs/images/anim/combopad.svg" width="400" alt="ComboPad"></a></td><td><h3>ComboPad</h3>A combo keyboard for fighting games such as King of Fighters and Street Fighter. Each key plays a whole combo as a USB keyboard, frame by frame. Choose the combos from a web page. For offline and training play.<br><br><a href="https://lonely-binary.github.io/TinkerPad/#combopad"><b>▶ Install firmware</b></a> · <a href="examples/04_Apps/ComboPad">Code &amp; guide</a></td></tr>
+</table>
+
+Most games, MidiPad, UkuleleTeacher and ComboPad need **USB Mode: USB-OTG (TinyUSB)** in the
+Arduino IDE. Each example's README lists its exact settings.
 
 ## What is on the board
 

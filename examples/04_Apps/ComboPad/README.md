@@ -1,5 +1,9 @@
 # ComboPad
 
+<p align="center"><img src="../../../docs/images/anim/combopad.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#combopad"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 A 16-key fighting-game combo keyboard for games like King of Fighters and Street Fighter.
 Every key plays a whole combo as a USB keyboard, frame by frame at 60 frames per second.
 

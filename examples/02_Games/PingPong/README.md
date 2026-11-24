@@ -1,5 +1,9 @@
 # PingPong
 
+<p align="center"><img src="../../../docs/images/anim/pingpong.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#pingpong"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 Table tennis for two players. Put TinkerPad on the table between you: player 1 sits on the
 **left** (teal), player 2 on the **right** (orange). Your bat is the column of 4 keys on your
 edge, dimly lit in your colour.

@@ -1,5 +1,9 @@
 # UkuleleTeacher
 
+<p align="center"><img src="../../../docs/images/anim/ukuleleteacher.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#ukuleleteacher"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 Learn a song on the ukulele, one phrase at a time. The keypad is a ukulele fretboard, the way
 you see it when you look down at a ukulele while playing it, so what you learn here is exactly
 where your fingers go on a real one:

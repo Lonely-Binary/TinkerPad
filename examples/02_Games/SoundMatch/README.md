@@ -1,5 +1,9 @@
 # SoundMatch
 
+<p align="center"><img src="../../../docs/images/anim/soundmatch.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#soundmatch"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 A memory game you play with your ears. The 16 keys hide 8 pairs of sounds: a cat, a dog, a
 rooster, a sheep, a horse, an elephant, a doorbell and coins. Find the pairs!
 

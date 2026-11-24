@@ -25,7 +25,7 @@
       color: var(--ink);
       font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-    main { max-width: 760px; margin: 0 auto; padding: 28px 16px 56px; }
+    main { max-width: 820px; margin: 0 auto; padding: 28px 16px 56px; }
     header { text-align: center; margin-bottom: 24px; }
     header img { height: 40px; }
     h1 { font-size: 30px; margin: 14px 0 4px; }
@@ -45,7 +45,11 @@
     ol { margin: 8px 0 0; padding-left: 22px; }
     li { margin: 4px 0; }
     h2.group { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal-ink); margin: 32px 4px 0; }
-    .app { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .app { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; scroll-margin-top: 16px; }
+    .app .anim { width: 100%; max-width: 420px; height: auto; border-radius: 10px; background: #fff; }
+    .app .text { flex: 1 1 220px; }
+    .app esp-web-install-button { flex: 0 0 auto; }
+    .app:target { border: 2px solid var(--teal); box-shadow: 0 0 0 4px rgba(20,137,143,.15); }
     .app p { margin: 4px 0 0; color: var(--muted); }
     .app .meta { font-size: 14px; color: var(--muted); }
     .install {
@@ -95,10 +99,11 @@
   </section>
 
   <h2 class="group">Games</h2>
-  <section class="card app">
-    <div>
+  <section class="card app" id="memorylights">
+    <img class="anim" src="images/anim/memorylights.svg" alt="What MemoryLights does" loading="lazy">
+    <div class="text">
       <h2>MemoryLights</h2>
-      <p>Watch the lights, then play them back. The classic memory game.</p>
+      <p>The classic memory game. The pads light up one after another, each with its own colour and xylophone note, and you play them back in the same order. Every round adds a step and goes a little faster. Three levels: 4, 8 or all 16 pads.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/MemoryLights">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/memorylights/manifest.json">
@@ -107,10 +112,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="whackamole">
+    <img class="anim" src="images/anim/whackamole.svg" alt="What WhackAMole does" loading="lazy">
+    <div class="text">
       <h2>WhackAMole</h2>
-      <p>Hit the moles before they hide again.</p>
+      <p>Moles pop up all over the board; hit them before they hide. Golden moles are worth three points, red flashing bombs cost five. A round lasts 30 seconds and the moles speed up every 10.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/WhackAMole">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/whackamole/manifest.json">
@@ -119,10 +125,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="pingpong">
+    <img class="anim" src="images/anim/pingpong.svg" alt="What PingPong does" loading="lazy">
+    <div class="text">
       <h2>PingPong</h2>
-      <p>Table tennis for two players, one column of keys each.</p>
+      <p>Table tennis for two, with the board between you. Each player's bat is the column of keys on their edge. Hit the ball back when it reaches you; it speeds up and can switch rows. First to 5 wins.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/PingPong">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/pingpong/manifest.json">
@@ -131,10 +138,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="soundmatch">
+    <img class="anim" src="images/anim/soundmatch.svg" alt="What SoundMatch does" loading="lazy">
+    <div class="text">
       <h2>SoundMatch</h2>
-      <p>A memory game for your ears: 16 keys hide 8 pairs of sounds.</p>
+      <p>A memory game you play with your ears. Sixteen keys hide eight pairs of real sounds: animals, a doorbell, coins. Turn two over at a time and find all the pairs in as few tries as you can.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/SoundMatch">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/soundmatch/manifest.json">
@@ -143,10 +151,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="beatgrid">
+    <img class="anim" src="images/anim/beatgrid.svg" alt="What BeatGrid does" loading="lazy">
+    <div class="text">
       <h2>BeatGrid</h2>
-      <p>A rhythm game on the keys, with the score shown on your phone or computer.</p>
+      <p>A rhythm game. The board makes its own Wi-Fi, and your phone or computer shows rings closing in on the pads; press each one as its ring lands. The board plays the music and keeps the score.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/02_Games/BeatGrid">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/beatgrid/manifest.json">
@@ -157,10 +166,11 @@
   </section>
 
   <h2 class="group">Music</h2>
-  <section class="card app">
-    <div>
+  <section class="card app" id="midipad">
+    <img class="anim" src="images/anim/midipad.svg" alt="What MidiPad does" loading="lazy">
+    <div class="text">
       <h2>MidiPad</h2>
-      <p>USB MIDI drum pads for GarageBand and other music apps, plus a follow-the-lights game.</p>
+      <p>Plugged into a computer it is a USB MIDI drum pad for GarageBand, Logic or Ableton. On its own it is a music game: pick one of 12 songs and follow the lights to play the melody while the drums play along.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/03_Music/MidiPad">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/midipad/manifest.json">
@@ -169,10 +179,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="ukuleleteacher">
+    <img class="anim" src="images/anim/ukuleleteacher.svg" alt="What UkuleleTeacher does" loading="lazy">
+    <div class="text">
       <h2>UkuleleTeacher</h2>
-      <p>Learn a song on the ukulele, one phrase at a time.</p>
+      <p>The keys become a ukulele fretboard, one row per string. The teacher plays a phrase, then the lights show you where to press, one note at a time, until you can play the whole song. What you learn is where your fingers go on a real ukulele.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/03_Music/UkuleleTeacher">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/ukuleleteacher/manifest.json">
@@ -183,10 +194,11 @@
   </section>
 
   <h2 class="group">Apps</h2>
-  <section class="card app">
-    <div>
+  <section class="card app" id="voiceboard">
+    <img class="anim" src="images/anim/voiceboard.svg" alt="What VoiceBoard does" loading="lazy">
+    <div class="text">
       <h2>VoiceBoard</h2>
-      <p>A family voice message board. Twelve people, one key each. Several boards keep each other in sync.</p>
+      <p>A voice message board for a family of up to twelve, one key each. Tap MIC, tap a person and talk; their key glows until they listen. Several boards around the house keep each other in sync, over ESP-NOW or your Wi-Fi.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/VoiceBoard">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/voiceboard/manifest.json">
@@ -195,10 +207,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="macropad">
+    <img class="anim" src="images/anim/macropad.svg" alt="What MacroPad does" loading="lazy">
+    <div class="text">
       <h2>MacroPad</h2>
-      <p>A 16-key Bluetooth shortcut keyboard, set up from a web page.</p>
+      <p>A Bluetooth shortcut keyboard. Give each key any shortcut from a web page on your phone or computer, pair it with your Mac or PC, and copy, paste or screenshot with one press.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/MacroPad">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/macropad/manifest.json">
@@ -207,10 +220,11 @@
       <p slot="not-allowed" class="nope">Open this page over https to install.</p>
     </esp-web-install-button>
   </section>
-  <section class="card app">
-    <div>
+  <section class="card app" id="combopad">
+    <img class="anim" src="images/anim/combopad.svg" alt="What ComboPad does" loading="lazy">
+    <div class="text">
       <h2>ComboPad</h2>
-      <p>A fighting-game combo keyboard: every key plays a whole combo over USB.</p>
+      <p>A combo keyboard for fighting games such as King of Fighters and Street Fighter. Each key plays a whole combo as a USB keyboard, frame by frame. Choose the combos from a web page. For offline and training play.</p>
       <div class="meta">Version 1.0.0 · <a href="https://github.com/Lonely-Binary/TinkerPad/tree/main/examples/04_Apps/ComboPad">How to use it</a></div>
     </div>
     <esp-web-install-button manifest="firmware/combopad/manifest.json">

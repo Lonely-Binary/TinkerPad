@@ -1,5 +1,9 @@
 # MemoryLights
 
+<p align="center"><img src="../../../docs/images/anim/memorylights.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#memorylights"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 Watch the lights, then play them back: the classic memory game. Every pad has its own
 colour and its own xylophone note, low notes at the bottom and high notes at the top, so you
 remember the tune as well as the lights.

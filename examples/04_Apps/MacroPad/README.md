@@ -1,5 +1,9 @@
 # MacroPad
 
+<p align="center"><img src="../../../docs/images/anim/macropad.svg" width="560" alt="What it does"></p>
+
+<p align="center"><a href="https://lonely-binary.github.io/TinkerPad/#macropad"><b>▶ Install from your browser</b></a> · no Arduino IDE needed</p>
+
 A 16-key Bluetooth shortcut keyboard, set up from a web page. Give every key a shortcut, pair it
 with your computer, and press.
 

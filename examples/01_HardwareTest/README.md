@@ -1,5 +1,7 @@
 # 01_HardwareTest - one simple test sketch per part
 
+<p align="center"><img src="../../docs/images/anim/hardwaretest.svg" width="560" alt="Testing each part of the board"></p>
+
 Board: **ESP32-S3 N16R8** (16 MB flash, 8 MB PSRAM) on the TinkerPad board.
 
 Each folder is one small sketch that tests one part of the board. They are
