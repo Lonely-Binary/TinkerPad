@@ -1,6 +1,6 @@
 // Piano - every key plays a song, and the LEDs dance with the notes
 // Board: ESP32-S3 N16R8 (16 MB flash, 8 MB PSRAM)
-// Setup guide: see Internal/README.md
+// Setup guide: see ../README.md
 //
 // Press a key        -> its song starts
 // Press the same key -> the song stops

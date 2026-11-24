@@ -10,7 +10,7 @@ independent: open one, upload it, see it work.
 | `I2CScan` | I2C bus | Prints the address of every chip that answers |
 | `KeyMatrix` | 16 keys | Prints which keys (0-15) are pressed |
 | `LedStrip` | 16 RGB LEDs | Red, green, blue (1 s each), then a white sweep |
-| `Speaker` | Speaker | Plays a 440 Hz beep |
+| `Speaker` | Speaker | Plays a C major scale up and down |
 | `Microphone` | Microphone | Prints a loudness bar |
 | `AudioLoopback` | Mic + speaker | Hold any key to record (red LED), release to play back (blue LED) |
 | `PsramTest` | 8 MB PSRAM | Writes and reads back 6 MB, prints how far it got |

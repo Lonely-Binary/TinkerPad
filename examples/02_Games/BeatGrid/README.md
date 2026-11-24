@@ -31,7 +31,10 @@ On a computer you can also tap the squares or use the keys
 
 ## Flash
 
-Libraries: `FastLED`, and `WebSockets` (by Markus Sattler, 2.7.x).
+**From the browser (no Arduino IDE):** open the [TinkerPad Web Installer](https://lonely-binary.github.io/TinkerPad/)
+in Chrome or Edge, plug in the board, click **Install** next to BeatGrid and pick the port.
+
+**From the Arduino IDE or arduino-cli:** Libraries: `FastLED`, and `WebSockets` (by Markus Sattler, 2.7.x).
 
 ```bash
 arduino-cli compile --fqbn "esp32:esp32:esp32s3:PSRAM=opi,CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB" BeatGrid
